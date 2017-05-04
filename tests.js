@@ -26,12 +26,26 @@
         var input = "AB1, AC2, AD3, BC2, BD4, CD5";
         var map = globals.TrainMap(input);
 
-        if(map.routeDistance(["A","B","C","D"]) === 8 &&  map.routeDistance(["D","A"]) === "NO SUCH ROUTE"){
+        if(map.routeDistance(["A","B","C","D"]) === 8 && map.routeDistance(["D","A"]) === "NO SUCH ROUTE"){
                 
             return "TEST PASSED";
         }
         console.log(map.routeDistance(["A","B","C","D"]));
         console.log(map.routeDistance(["D","A"]));
+        return "TEST FAILED";
+    }
+
+    // Extremely basic test of trainMap possibleRoutesMax functionailty
+    globals.PossibleRoutesMax = function (){
+        var input = "AB1, AC2, AD3, BC2, CD5, DB2";
+        var map = globals.TrainMap(input);
+
+        if(map.possibleRoutesMax("A","B",4) === 3 && map.possibleRoutesMax("A","D",1) === 0){
+            
+            return "TEST PASSED";
+        }
+        console.log(map.possibleRoutesMax("A","B",4));
+        console.log(map.possibleRoutesMax("A","D",1));
         return "TEST FAILED";
     }
 
