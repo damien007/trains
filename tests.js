@@ -21,7 +21,7 @@
     }
 
     // Extremely basic test of trainMap routeDistance functionailty
-    globals.RouteTest = function (){
+    globals.RouteDistanceTest = function (){
 
         var input = "AB1, AC2, AD3, BC2, BD4, CD5";
         var map = globals.TrainMap(input);

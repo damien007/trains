@@ -49,7 +49,7 @@
      */
     TrainMap.prototype.routeDistance = function(route){
 
-        var stations = this.nodes;
+        var routes = this.nodes;
         var distanceTravelled = 0;
         var origin = route[0];
 
@@ -57,15 +57,56 @@
 
             var destination = route[i];
 
-            if(!stations[origin] || !stations[origin][destination]){
+            if(!routes[origin] || !routes[origin][destination]){
                 return "NO SUCH ROUTE";
             }
 
-            distanceTravelled += stations[origin][destination];
+            distanceTravelled += routes[origin][destination];
             origin = destination;
         }
 
         return distanceTravelled;
+    }
+
+    /**
+     * Determines the number of possible route between two given stations 
+     * on the network. Takes 4 parameters: The starting station; The
+     * destination station; The max number of stops that can be made;
+     * AND/OR The exact number of stops that must be made;
+     * 
+     * e.g. ("A", "D", 4, null) OR ("A", "D", null, 4)
+     */
+    TrainMap.prototype.possibleRoutes = function (start, end, maxStops, exactStops){
+
+        var routes = this.nodes;
+        var possibleRoutes = 0;
+
+        // Need one or the other to avoid infinite recursive loop
+        if(!maxStops && !exactStops) return;
+
+        function findRoute(current, stops){
+            
+            if(maxStops && stops > maxStops){
+                return;
+            }
+            
+            if(current === end){
+                possibleRoutes += 1;
+            }
+
+            if(exactStops && stops === exactStops){
+                return;
+            }
+
+            for(var destination in routes[current]){
+
+                findRoute(destination, stops +1);
+            }
+        };
+
+        findRoute(start, 0);
+
+        return possibleRoutes;
     }
 
     /**
