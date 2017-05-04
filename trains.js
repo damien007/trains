@@ -108,8 +108,7 @@
     /**
      * Determines the number of possible route between two given stations 
      * on the network. Takes 4 parameters: The starting station; The
-     * destination station; The max number of stops that can be made;
-     * AND/OR The exact number of stops that must be made;
+     * destination station; And the exact number of stops that must be made;
      * 
      * e.g. ("A", "D", 4)
      */
@@ -143,11 +142,68 @@
     }
 
     /**
-     * Global function for accessing TrainMap constructor for testing purposes
+     * Returns the distance of the shortest route possible between any two stations
+     * using an implementation of Djikstra's algorithm. Take a starting station and
+     * and ending station to find the shortest distance between.
+     * 
+     * e.g. ("A", "D")
      */
-    globals.TrainMap = function(input){
+    TrainMap.prototype.shortestRoute = function (start, end){
 
-        return new TrainMap(input);
+        var routes = this.nodes;
+        var unvisited = [];
+        var distance = {};
+        for(var station in routes){
+
+            //Mark every station as unvisitied
+            unvisited.push(station);
+            //Initialize the distance to every station as infinity
+            distance[station] = Infinity;
+        }
+
+        //Mark the starting point with distance 0
+        distance[start] = 0;
+
+        function findShortest(){
+            var dist = Infinity;
+            var closest = unvisited[0];
+
+            // Find the next unvisited station with shortest distance
+            // from the starting point  
+            for(var i = 1; i < unvisited.length; i++){
+                var station = unvisited[i];
+                if(distance[station] < distance[closest]){
+                    closest = station;
+                }
+            }
+
+            // If the next unvisited closest station is the end point
+            // we have found the shortest distance and can stop
+            if(closest === end){
+                return distance[closest]
+            }
+
+            // Remove the unvisited closest station from the unvisited
+            // queue.
+            var index = unvisited.indexOf(closest);
+            unvisited.splice(index, 1);
+
+            // If the distance from the unvisited closest station
+            // to each other station is less than what we already
+            // have update it as the shortest distance
+            for(var destination in routes[unvisited]){
+
+                var newDistance = distance[unvisited] + routes[unvisited][destination];
+                if(newDistance < distance[destination]){
+                    distance[destination] = newDistance;
+                }
+            }
+
+            // Repeat
+            return findShortest();
+        }
+
+        return findShortest();
     }
 
 
@@ -187,6 +243,11 @@
 
                     output.innerHTML += "Output #7: " + 
                         trainMap.possibleRoutesExact("A", "C", 4) + "</br>"; 
+
+                    output.innerHTML += "Output #8: " + 
+                        trainMap.shortestRoute("A", "C") + "</br>"; 
+                    output.innerHTML += "Output #9: " + 
+                        trainMap.shortestRoute("B", "B") + "</br>"; 
                     
                 }
                 
@@ -194,5 +255,13 @@
             reader.readAsText(file);
         }
     });
+
+    /**
+     * Global function for accessing TrainMap constructor for testing purposes
+     */
+    globals.TrainMap = function(input){
+
+        return new TrainMap(input);
+    }
     
 }(this));
