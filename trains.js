@@ -142,6 +142,43 @@
     }
 
     /**
+     * Determines the number of possible route between two given stations 
+     * on the network. Takes 4 parameters: The starting station; The
+     * destination station; And the exact number of stops that must be made;
+     * 
+     * e.g. ("A", "D", 4)
+     */
+    TrainMap.prototype.possibleRoutesDistance = function (start, end, maxDistance){
+
+        var routes = this.nodes;
+        var possibleRoutes = 0;
+
+        // Check exit condition to avoid infinite recursive loop
+        if(!maxDistance) return;
+
+        function findRoute(current, totalDistance){
+            
+            if(totalDistance >= maxDistance){
+                return;
+            }
+            
+            if(current === end && totalDistance > 0){
+                possibleRoutes += 1;
+            }
+
+            for(var destination in routes[current]){
+
+                var distance = routes[current][destination];
+                findRoute(destination, totalDistance + distance);
+            }
+        };
+
+        findRoute(start, 0);
+
+        return possibleRoutes;
+    }
+
+    /**
      * Returns the distance of the shortest route possible between any two stations
      * using an implementation of Djikstra's algorithm. Take a starting station and
      * and ending station to find the shortest distance between.
@@ -156,15 +193,15 @@
 
         for(var station in routes){
 
-            //Mark every station as unvisitied
+            // Mark every station as unvisitied with infinite (uknown) distance from start
             unvisited.push(station);
-            //Initialize the distance to every station as infinity
             distance[station] = Infinity;
         }
 
         // Instead of marking the starting point with distance 0,
-        // calculate the distance from the starting point to every
-        // other destination. So the distance going back can be found
+        // calculate the distance from the starting point to connecting
+        // destinations initially. This allows the distance going 
+        // back to the start to be found.
         for(var destination in routes[start]){
                 
             var newDistance = routes[start][destination];
@@ -209,10 +246,9 @@
                 }
             }
 
-            // Repeat
+            // Repeat until 'end' is the closest unvisited station
             return findShortest();
         }
-
         return findShortest();
     }
 
@@ -258,7 +294,8 @@
                         trainMap.shortestRoute("A", "C") + "</br>"; 
                     output.innerHTML += "Output #9: " + 
                         trainMap.shortestRoute("B", "B") + "</br>"; 
-                    
+                    output.innerHTML += "Output #10: " + 
+                        trainMap.possibleRoutesDistance("C", "C", 30) + "</br>"; 
                 }
                 
             }
