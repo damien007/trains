@@ -70,23 +70,23 @@
 
     /**
      * Determines the number of possible route between two given stations 
-     * on the network. Takes 4 parameters: The starting station; The
-     * destination station; The max number of stops that can be made;
-     * AND/OR The exact number of stops that must be made;
+     * on the network below a maximum number of stops. Takes 3 parameters: 
+     * The starting station; The destination station; 
+     * And the max number of stops that can be made;
      * 
-     * e.g. ("A", "D", 4, null) OR ("A", "D", null, 4)
+     * e.g. ("A", "D", 4)
      */
-    TrainMap.prototype.possibleRoutes = function (start, end, maxStops, exactStops){
+    TrainMap.prototype.possibleRoutesMax = function (start, end, maxStops){
 
         var routes = this.nodes;
         var possibleRoutes = 0;
 
-        // Need one or the other to avoid infinite recursive loop
-        if(!maxStops && !exactStops) return;
+        // Check exit condition to avoid infinite recursive loop
+        if(!maxStops) return;
 
         function findRoute(current, stops){
             
-            if(maxStops && stops > maxStops){
+            if(stops > maxStops){
                 return;
             }
             
@@ -94,7 +94,40 @@
                 possibleRoutes += 1;
             }
 
-            if(exactStops && stops === exactStops){
+            for(var destination in routes[current]){
+
+                findRoute(destination, stops +1);
+            }
+        };
+
+        findRoute(start, 0);
+
+        return possibleRoutes;
+    }
+
+    /**
+     * Determines the number of possible route between two given stations 
+     * on the network. Takes 4 parameters: The starting station; The
+     * destination station; The max number of stops that can be made;
+     * AND/OR The exact number of stops that must be made;
+     * 
+     * e.g. ("A", "D", 4)
+     */
+    TrainMap.prototype.possibleRoutesExact = function (start, end, exactStops){
+
+        var routes = this.nodes;
+        var possibleRoutes = 0;
+
+        // Check exit condition to avoid infinite recursive loop
+        if(!exactStops) return;
+
+        function findRoute(current, stops){
+            
+            if(stops === exactStops){
+
+                if(current === end){
+                    possibleRoutes += 1;
+                }
                 return;
             }
 
@@ -148,6 +181,12 @@
                         trainMap.routeDistance(["A","E","B","C","D"]) + "</br>";
                     output.innerHTML += "Output #5: " + 
                         trainMap.routeDistance(["A","E","D"]) + "</br>"; 
+
+                    output.innerHTML += "Output #6: " + 
+                        trainMap.possibleRoutesMax("C", "C", 3) + "</br>"; 
+
+                    output.innerHTML += "Output #7: " + 
+                        trainMap.possibleRoutesExact("A", "C", 4) + "</br>"; 
                     
                 }
                 
