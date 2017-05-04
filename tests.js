@@ -1,5 +1,5 @@
 /**
- * Global functions for basic testing of the functionality of 'trains.js'
+ * Global functions for private testing of the functionality of 'trains.js'
  */
 (function(globals){
 
@@ -49,6 +49,26 @@
         console.log(map.possibleRoutesMax("A","B",4));
         console.log(map.possibleRoutesMax("B","D",0));
         console.log(map.possibleRoutesMax("B","B",6));
+        return "TEST FAILED";
+    }
+
+    // Extremely basic test of trainMap shortestRoute functionailty
+    globals.ShortestRouteTest = function (){
+
+        var input = "AB1, AC2, BC2, CD5, DA5";
+        var map = globals.TrainMap(input);
+
+        if(map.shortestRoute("A","B") === 1 &&
+            map.shortestRoute("A","C") === 2 &&
+            map.shortestRoute("A","D") === 7 &&
+            map.shortestRoute("A","A") === 12){
+            
+            return "TEST PASSED";
+        }
+        console.log(map.shortestRoute("A","B"));
+        console.log(map.shortestRoute("A","C"));
+        console.log(map.shortestRoute("A","D"));
+        console.log(map.shortestRoute("A","A"));
         return "TEST FAILED";
     }
 
