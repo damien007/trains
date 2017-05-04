@@ -41,13 +41,13 @@
         var map = globals.TrainMap(input);
 
         if(map.possibleRoutesMax("A","B",4) === 4 && 
-            map.possibleRoutesMax("A","D",1) === 0 && 
+            map.possibleRoutesMax("B","D",1) === 0 && 
             map.possibleRoutesMax("B","B",6) === 2){
             
             return "TEST PASSED";
         }
         console.log(map.possibleRoutesMax("A","B",4));
-        console.log(map.possibleRoutesMax("A","D",1));
+        console.log(map.possibleRoutesMax("B","D",0));
         console.log(map.possibleRoutesMax("B","B",6));
         return "TEST FAILED";
     }

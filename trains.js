@@ -90,9 +90,7 @@
                 return;
             }
             
-            if(current === end){
-                console.log(current);
-                console.log(stops);
+            if(current === end && stops > 0){
                 possibleRoutes += 1;
             }
 
