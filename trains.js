@@ -153,6 +153,7 @@
         var routes = this.nodes;
         var unvisited = [];
         var distance = {};
+
         for(var station in routes){
 
             //Mark every station as unvisitied
@@ -161,10 +162,19 @@
             distance[station] = Infinity;
         }
 
-        //Mark the starting point with distance 0
-        distance[start] = 0;
+        // Instead of marking the starting point with distance 0,
+        // calculate the distance from the starting point to every
+        // other destination. So the distance going back can be found
+        for(var destination in routes[start]){
+                
+            var newDistance = routes[start][destination];
+            if(newDistance < distance[destination]){
+                distance[destination] = newDistance;
+            }
+        }
 
         function findShortest(){
+
             var dist = Infinity;
             var closest = unvisited[0];
 
@@ -176,30 +186,25 @@
                     closest = station;
                 }
             }
-            console.log(closest);
+
             // If the next unvisited closest station is the end point
-            // we have found the shortest distance and can stop
+            // we have found the shortest path to it and can stop
             if(closest === end){
-                console.log(closest);
                 return distance[closest]
             }
 
             // Remove the unvisited closest station from the unvisited
-            // queue.
+            // queue. Becuase we are 'Visiting' it
             var index = unvisited.indexOf(closest);
             unvisited.splice(index, 1);
 
-            console.log(distance[unvisited]); // I mixed up 'closest' and 'unvisited' :/
-
             // If the distance from the unvisited closest station
             // to each other station is less than what we already
-            // have update it as the shortest distance
-            for(var destination in routes[unvisited]){
+            // have update it with the new shortest distance
+            for(var destination in routes[closest]){
                 
-                var newDistance = distance[unvisited] + routes[unvisited][destination];
+                var newDistance = distance[closest] + routes[closest][destination];
                 if(newDistance < distance[destination]){
-                    console.log(distance[destination]);
-                    console.log(newDistance)
                     distance[destination] = newDistance;
                 }
             }
@@ -251,8 +256,8 @@
 
                     output.innerHTML += "Output #8: " + 
                         trainMap.shortestRoute("A", "C") + "</br>"; 
-                   // output.innerHTML += "Output #9: " + 
-                    //    trainMap.shortestRoute("B", "B") + "</br>"; 
+                    output.innerHTML += "Output #9: " + 
+                        trainMap.shortestRoute("B", "B") + "</br>"; 
                     
                 }
                 
