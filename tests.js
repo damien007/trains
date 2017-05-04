@@ -1,5 +1,5 @@
 /**
- * Global functions for testing the functionality 'trains.js'
+ * Global functions for basic testing of the functionality of 'trains.js'
  */
 (function(globals){
 
@@ -17,6 +17,21 @@
                 
             return "TEST PASSED";
         }
+        return "TEST FAILED";
+    }
+
+    // Extremely basic test of trainMap routeDistance functionailty
+    globals.RouteTest = function (){
+
+        var input = "AB1, AC2, AD3, BC2, BD4, CD5";
+        var map = globals.TrainMap(input);
+
+        if(map.routeDistance(["A","B","C","D"]) === 8 &&  map.routeDistance(["D","A"]) === "NO SUCH ROUTE"){
+                
+            return "TEST PASSED";
+        }
+        console.log(map.routeDistance(["A","B","C","D"]));
+        console.log(map.routeDistance(["D","A"]));
         return "TEST FAILED";
     }
 

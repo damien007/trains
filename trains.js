@@ -8,12 +8,11 @@
 
     "use strict";
 
-    var map = null;
     var fileInput = document.getElementById("txtInput");
     var output = document.getElementById("txtOutput");
 
     /**
-     * Constructor for a class of train nodes. Take an input string 
+     * Constructor for a class of train nodes. Takes an input string 
      * consisting of a ', ' deliminated list of interconnected stations.
      * The first two characters range 'A-D' identify two connectected stations. 
      * The third as an intger indicates the distance between the two stations
@@ -42,6 +41,34 @@
     }
 
     /**
+     * Determines the distance to travel along a certain route in the train network,
+     * or if no such route is possible. Takes an array of stations indicating
+     * the route to travel in order of the stations to be visited.
+     * 
+     * e.g. ["A","D","C"]
+     */
+    TrainMap.prototype.routeDistance = function(route){
+
+        var stations = this.nodes;
+        var distanceTravelled = 0;
+        var origin = route[0];
+
+        for(var i = 1; i < route.length; i++){
+
+            var destination = route[i];
+
+            if(!stations[origin] || !stations[origin][destination]){
+                return "NO SUCH ROUTE";
+            }
+
+            distanceTravelled += stations[origin][destination];
+            origin = destination;
+        }
+
+        return distanceTravelled;
+    }
+
+    /**
      * Global function for accessing TrainMap constructor for testing purposes
      */
     globals.TrainMap = function(input){
@@ -58,7 +85,31 @@
             reader.onload = function(e) { 
                 
                 var content = reader.result;
-                output.innerText = content;
+                
+                // Check cotents start as expected
+                if(content.substring(0,7) === "Graph: "){
+
+                    var trainMap = null;
+
+                    // Remove "Graph: " from start of input text
+                    var input = content.substring(7);
+                    
+                    trainMap = new TrainMap(input);
+
+                    // Output the distance of several routes
+                    output.innerHTML = "Output #1: " + 
+                        trainMap.routeDistance(["A","B","C"]) + "</br>"; 
+                    output.innerHTML += "Output #2: " + 
+                        trainMap.routeDistance(["A","D"]) + "</br>";
+                    output.innerHTML += "Output #3: " + 
+                        trainMap.routeDistance(["A","D","C"]) + "</br>";
+                    output.innerHTML += "Output #4: " + 
+                        trainMap.routeDistance(["A","E","B","C","D"]) + "</br>";
+                    output.innerHTML += "Output #5: " + 
+                        trainMap.routeDistance(["A","E","D"]) + "</br>"; 
+                    
+                }
+                
             }
             reader.readAsText(file);
         }
