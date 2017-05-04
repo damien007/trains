@@ -1,7 +1,7 @@
 /**
- * Simulates a map of railway stations in the form of a
- * connected weighted graph. Provides functions for computing the distance
- * along a certain route, the number of different routes between two 
+ * Simulates a map of railway stations in the form of a directed,
+ * connected, weighted graph. Provides functions for computing the distance
+ * along a certain route, the number of possible routes between two 
  * stations, and the shortest route between two stations.
  */
 (function(globals){
@@ -14,7 +14,7 @@
     /**
      * Constructor for a class of train nodes. Takes an input string 
      * consisting of a ', ' deliminated list of interconnected stations.
-     * The first two characters range 'A-D' identify two connectected stations. 
+     * The first two characters range 'A-D' identify two connectected stations.
      * The third as an intger indicates the distance between the two stations
      * 
      * e.g. input "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7"
@@ -31,9 +31,9 @@
             var distance = parseInt(input[i].substring(2,3));
 
             if(!nodes[origin]) {
-
                 nodes[origin] = {};
             } 
+
             nodes[origin][destination] = distance;
         }
 
@@ -41,9 +41,9 @@
     }
 
     /**
-     * Determines the distance to travel along a certain route in the train network,
-     * or if no such route is possible. Takes an array of stations indicating
-     * the route to travel in order of the stations to be visited.
+     * Determines the distance to travel along a certain route in the train 
+     * network, or if no such route is possible. Takes an array of stations 
+     * indicating the route to travel in order of the stations to be visited.
      * 
      * e.g. ["A","D","C"]
      */
@@ -71,8 +71,8 @@
     /**
      * Determines the number of possible route between two given stations 
      * on the network below a maximum number of stops. Takes 3 parameters: 
-     * The starting station; The destination station; 
-     * And the max number of stops that can be made;
+     * The starting station; The destination station; And the max number 
+     * of stops that can be made;
      * 
      * e.g. ("A", "D", 4)
      */
@@ -95,7 +95,6 @@
             }
 
             for(var destination in routes[current]){
-
                 findRoute(destination, stops +1);
             }
         };
@@ -131,7 +130,6 @@
             }
 
             for(var destination in routes[current]){
-
                 findRoute(destination, stops +1);
             }
         };
@@ -143,12 +141,13 @@
 
     /**
      * Determines the number of possible routes between two given stations 
-     * on the network. Takes 4 parameters: The starting station; The
-     * destination station; And the maxDistance the total route must be LESS THAN.
+     * on the network. Takes 4 parameters: 
+     * The starting station; The destination station; And the max distance 
+     * the total route must be LESS THAN.
      * 
      * e.g. ("A", "D", 4)
      */
-    TrainMap.prototype.possibleRoutesDistance = function (start, end, maxDistance){
+    TrainMap.prototype.possibleRoutesDistance=function(start,end,maxDistance){
 
         var routes = this.nodes;
         var possibleRoutes = 0;
@@ -179,9 +178,10 @@
     }
 
     /**
-     * Returns the distance of the shortest route possible between any two stations
-     * using an implementation of Djikstra's algorithm. Take a starting station and
-     * and ending station to find the shortest distance between.
+     * Returns the distance of the shortest route possible between any two 
+     * stations using an implementation of Djikstra's algorithm. 
+     * Takes a starting station and and ending station to find the 
+     * shortest distance between.
      * 
      * e.g. ("A", "D")
      */
@@ -193,7 +193,8 @@
 
         for(var station in routes){
 
-            // Mark every station as unvisitied with infinite (uknown) distance from start
+            // Initially Mark every station as unvisitied with infinite 
+            // (uknown) distance from start
             unvisited.push(station);
             distance[station] = Infinity;
         }
@@ -218,6 +219,7 @@
             // Find the next unvisited station with shortest distance
             // from the starting point  
             for(var i = 1; i < unvisited.length; i++){
+
                 var station = unvisited[i];
                 if(distance[station] < distance[closest]){
                     closest = station;
@@ -240,7 +242,9 @@
             // have update it with the new shortest distance
             for(var destination in routes[closest]){
                 
-                var newDistance = distance[closest] + routes[closest][destination];
+                var newDistance = distance[closest] + 
+                    routes[closest][destination];
+
                 if(newDistance < distance[destination]){
                     distance[destination] = newDistance;
                 }
@@ -257,6 +261,7 @@
 
         var file = evt.target.files[0];
         if(file){
+
             var reader = new FileReader();
             reader.onload = function(e) { 
                 
@@ -280,22 +285,32 @@
                     output.innerHTML += "Output #3: " + 
                         trainMap.routeDistance(["A","D","C"]) + "</br>";
                     output.innerHTML += "Output #4: " + 
-                        trainMap.routeDistance(["A","E","B","C","D"]) + "</br>";
+                        trainMap.routeDistance(["A","E","B","C","D"])+"</br>";
                     output.innerHTML += "Output #5: " + 
                         trainMap.routeDistance(["A","E","D"]) + "</br>"; 
 
+                    // Output the number of possible routes starting 
+                    // at "C" and ending at "C" with no more than 3 stops
                     output.innerHTML += "Output #6: " + 
                         trainMap.possibleRoutesMax("C", "C", 3) + "</br>"; 
 
+                    // Output the number of possible routes starting
+                    // at "A" and ending at "C" with exactly 4 stops
                     output.innerHTML += "Output #7: " + 
                         trainMap.possibleRoutesExact("A", "C", 4) + "</br>"; 
 
+                    // Output distance of the shortest route between the
+                    // given starting and end points.
                     output.innerHTML += "Output #8: " + 
                         trainMap.shortestRoute("A", "C") + "</br>"; 
                     output.innerHTML += "Output #9: " + 
                         trainMap.shortestRoute("B", "B") + "</br>"; 
+
+                    // Output the number of possible routes starting
+                    // at "C" and ending at "C" with a total distance
+                    // less than 30
                     output.innerHTML += "Output #10: " + 
-                        trainMap.possibleRoutesDistance("C", "C", 30) + "</br>"; 
+                        trainMap.possibleRoutesDistance("C", "C", 30)+ "</br>";
                 }
                 
             }
