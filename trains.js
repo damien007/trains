@@ -8,17 +8,19 @@
 
     "use strict";
 
-    var map;
+    var map = null;
+    var fileInput = document.getElementById("txtInput");
+    var output = document.getElementById("txtOutput");
 
     /**
      * Constructor for a class of train nodes. Take an input string 
-     * consisting of a ', ' deliminated list of nodes consisting of 3 charters.
-     * The first indicating the origin node, the second the destination node,
-     * and the third the wieght/distance between the nodes as an integer.
+     * consisting of a ', ' deliminated list of interconnected stations.
+     * The first two characters range 'A-D' identify two connectected stations. 
+     * The third as an intger indicates the distance between the two stations
      * 
      * e.g. input "AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7"
      */
-    function trainMap (input) {
+    function TrainMap (input) {
 
         var nodes = {};
         var input = input.split(", ");
@@ -37,12 +39,28 @@
         }
 
         this.nodes = nodes;
-        console.log(JSON.stringify(this.nodes));
     }
 
+    /**
+     * Global function for accessing TrainMap constructor for testing purposes
+     */
     globals.Graph = function(input){
 
-        map = new trainMap(input);
+        map = new TrainMap(input);
     }
+
+    fileInput.addEventListener("change", function(evt){
+
+        var file = evt.target.files[0];
+        if(file){
+            var reader = new FileReader();
+            reader.onload = function(e) { 
+                
+                var content = reader.result;
+                output.innerText = content;
+            }
+            reader.readAsText(file);
+        }
+    });
 
 }(this));

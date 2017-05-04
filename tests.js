@@ -1,6 +1,5 @@
 /**
- * Functions for testing the basic functionality of the
- * classes and functions in 'trains.js'
+ * Functions for testing the functionality 'trains.js'
  */
 (function(globals){
 
