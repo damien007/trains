@@ -44,10 +44,11 @@
     /**
      * Global function for accessing TrainMap constructor for testing purposes
      */
-    globals.Graph = function(input){
+    globals.TrainMap = function(input){
 
-        map = new TrainMap(input);
+        return new TrainMap(input);
     }
+
 
     fileInput.addEventListener("change", function(evt){
 
@@ -62,5 +63,5 @@
             reader.readAsText(file);
         }
     });
-
+    
 }(this));
