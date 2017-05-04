@@ -36,16 +36,19 @@
     }
 
     // Extremely basic test of trainMap possibleRoutesMax functionailty
-    globals.PossibleRoutesMax = function (){
+    globals.PossibleRoutesMaxTest = function (){
         var input = "AB1, AC2, AD3, BC2, CD5, DB2";
         var map = globals.TrainMap(input);
 
-        if(map.possibleRoutesMax("A","B",4) === 3 && map.possibleRoutesMax("A","D",1) === 0){
+        if(map.possibleRoutesMax("A","B",4) === 4 && 
+            map.possibleRoutesMax("A","D",1) === 0 && 
+            map.possibleRoutesMax("B","B",6) === 2){
             
             return "TEST PASSED";
         }
         console.log(map.possibleRoutesMax("A","B",4));
         console.log(map.possibleRoutesMax("A","D",1));
+        console.log(map.possibleRoutesMax("B","B",6));
         return "TEST FAILED";
     }
 

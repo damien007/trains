@@ -91,6 +91,8 @@
             }
             
             if(current === end){
+                console.log(current);
+                console.log(stops);
                 possibleRoutes += 1;
             }
 
