@@ -142,9 +142,9 @@
     }
 
     /**
-     * Determines the number of possible route between two given stations 
+     * Determines the number of possible routes between two given stations 
      * on the network. Takes 4 parameters: The starting station; The
-     * destination station; And the exact number of stops that must be made;
+     * destination station; And the maxDistance the total route must be LESS THAN.
      * 
      * e.g. ("A", "D", 4)
      */

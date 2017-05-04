@@ -72,4 +72,24 @@
         return "TEST FAILED";
     }
 
+    // Extremely basic test of trainMap possible routes by dinstance
+    globals.PossibleRoutesDistanceTest = function (){
+
+        var input = "AB1, AC2, BC2, CD5, DA5";
+        var map = globals.TrainMap(input);
+
+        if(map.possibleRoutesDistance("A","B", 15) === 3 &&
+            map.possibleRoutesDistance("A","C", 2) === 0 &&
+            map.possibleRoutesDistance("A","D", 9) === 2 &&
+            map.possibleRoutesDistance("A","A", 13) === 1){
+            
+            return "TEST PASSED";
+        }
+        console.log(map.possibleRoutesDistance("A","B", 15));
+        console.log(map.possibleRoutesDistance("A","C", 2));
+        console.log(map.possibleRoutesDistance("A","D", 9));
+        console.log(map.possibleRoutesDistance("A","A", 13));
+        return "TEST FAILED";
+    }
+
 }(this));
