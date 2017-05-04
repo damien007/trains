@@ -176,10 +176,11 @@
                     closest = station;
                 }
             }
-
+            console.log(closest);
             // If the next unvisited closest station is the end point
             // we have found the shortest distance and can stop
             if(closest === end){
+                console.log(closest);
                 return distance[closest]
             }
 
@@ -188,13 +189,17 @@
             var index = unvisited.indexOf(closest);
             unvisited.splice(index, 1);
 
+            console.log(distance[unvisited]); // I mixed up 'closest' and 'unvisited' :/
+
             // If the distance from the unvisited closest station
             // to each other station is less than what we already
             // have update it as the shortest distance
             for(var destination in routes[unvisited]){
-
+                
                 var newDistance = distance[unvisited] + routes[unvisited][destination];
                 if(newDistance < distance[destination]){
+                    console.log(distance[destination]);
+                    console.log(newDistance)
                     distance[destination] = newDistance;
                 }
             }
@@ -246,8 +251,8 @@
 
                     output.innerHTML += "Output #8: " + 
                         trainMap.shortestRoute("A", "C") + "</br>"; 
-                    output.innerHTML += "Output #9: " + 
-                        trainMap.shortestRoute("B", "B") + "</br>"; 
+                   // output.innerHTML += "Output #9: " + 
+                    //    trainMap.shortestRoute("B", "B") + "</br>"; 
                     
                 }
                 
